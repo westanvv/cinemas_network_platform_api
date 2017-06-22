@@ -1,11 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const default_ = require('./default');
+const cinema = require('./cinema');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send({
-    test: '345345345'
-  });
-});
-
-module.exports = router;
+module.exports = (app) => {
+  app.use('/', default_);
+  app.use('/cinema', cinema);
+};
