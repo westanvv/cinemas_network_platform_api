@@ -1,3 +1,5 @@
 .idea
-#.env
 node_modules
+
+#Commented for comfortable testing after clonning
+#.env
