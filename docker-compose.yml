@@ -5,3 +5,4 @@ services:
     ports:
       - "27018:27017"
     command: --smallfiles --rest
+
