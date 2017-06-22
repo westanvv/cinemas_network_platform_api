@@ -1,11 +1,11 @@
-const Cinema = require('../models/Cinema');
+const Session = require('../models/Session');
 
 module.exports = {
   getAll,
 };
 
 function getAll(req, res, next) {
-  Cinema.find({}).then((data, err) => {
+  Session.find({}).then((data, err) => {
     if (err) return next(err);
 
     res.send(data);

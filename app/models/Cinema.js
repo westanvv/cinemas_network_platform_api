@@ -5,4 +5,4 @@ const CinemaSchema = new mongoose.Schema({
   address: String
 });
 
-module.exports = mongoose.model('Cinema', CinemaSchema);
+module.exports = mongoose.model('cinemas', CinemaSchema);
