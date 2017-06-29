@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
 const compression = require('compression');
+const response_ = require('../libs/response');
 
 module.exports = (app) => {
 
@@ -20,4 +21,11 @@ module.exports = (app) => {
 
   //enable CORS
   app.use(cors());
+
+  //just for test
+  app.use((req, res, next) => {
+    res = response_(res);
+    next();
+  });
+
 };

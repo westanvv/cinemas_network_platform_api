@@ -1,7 +1,7 @@
 const util = require('util');
 const mongoose = require('mongoose');
 const debug = require('debug')('cinemas_network_platform_api:mongoose');
-const logger = require('../libs/logger')(module);
+const logger = require('../app/libs/logger')(module);
 
 mongoose.Promise = require('bluebird');
 
