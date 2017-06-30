@@ -44,11 +44,17 @@ function add(req, res, next) {
 }
 
 function update(req, res, next) {
+  //Check valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.sendStatus(404);
+
   Hall.update({
     _id: req.params.id,
   }, { $set: req.body }, (err, data) => {
     if (err) return next(err);
-
-    res.send();
+    if (data.n === 0) {
+      res.sendStatus(304);
+    } else {
+      res.sendStatus(200);
+    }
   });
 }
