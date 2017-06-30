@@ -1,9 +1,11 @@
+const mongoose = require('mongoose');
 const Film = require('../models/Film');
 
 module.exports = {
   getAll,
-  addElement,
   getElement,
+  add,
+  update
 };
 
 function getAll(req, res, next) {
@@ -14,31 +16,46 @@ function getAll(req, res, next) {
   });
 }
 
-function addElement(req, res, next) {
+function getElement(req, res, next) {
+  //Check valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) return res.sendStatus(404);
+
+  Film.findById(req.params.id).then((data, err) => {
+    if (err) return next(err);
+    if (!data) {
+      res.sendStatus(404);
+    } else {
+      res.json(data);
+    }
+  });
+}
+
+function add(req, res, next) {
   Film.create({
-    title:        '555',
-    description:  '151651',
-    year:         '2222',
-    duration:     '1h 33min',
-    directors:    [ 'one' ],
-    actors:       [ 'one', 'two'],
-    genres:       [],
-    rating_count: 2,
-    rating:       5.5,
+    title         : req.body.title || 'New film',
+    description   : req.body.description || '',
+    year          : req.body.year || 0,
+    duration      : req.body.duration || '',
+    directors     : req.body.directors || [],
+    actors        : req.body.actors || [],
+    genres        : req.body.genres || [],
+    rating_count  : req.body.rating_count || 0,
+    rating        : req.body.rating || 0,
   }, (err, data) => {
     if (err) return next(err);
 
-    console.log(data);
-    res.send({
-      result: 'ok'
+    res.json({
+      _id: data._id
     });
   });
 }
 
-function getElement(req, res, next) {
-  Film.find({}).then((data, err) => {
+function update(req, res, next) {
+  Film.update({
+    _id: req.params.id,
+  }, { $set: req.body }, (err, data) => {
     if (err) return next(err);
 
-    res.send(data);
+    res.send();
   });
 }

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const FilmSchema = new mongoose.Schema({
   title:        String,
   description:  String,
-  year:         String,
+  year:         { type: Number, default: 0 },
   duration:     String,
   directors:    [String],
   actors:       [String],
