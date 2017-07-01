@@ -8,6 +8,7 @@ module.exports = {
   getAll,
   getElement,
   add,
+  del,
   update,
   parse
 };
@@ -57,6 +58,20 @@ function add(req, res, next) {
       res.json({
         _id: data._id
       });
+    });
+}
+
+function del(req, res, next) {
+  //Check valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.sendStatus(404);
+  }
+
+  Film.findById(req.params.id)
+    .remove()
+    .then((data, err) => {
+      if (err) return next(err);
+      res.sendStatus(200);
     });
 }
 

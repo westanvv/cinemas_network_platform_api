@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 const Promise = require("bluebird");
+const moment = require('moment');
+
 const Cinema = require('../models/Cinema');
+const Session = require('../models/Session');
 
 module.exports = {
   getAll,
   getElement,
   add,
+  del,
   update,
   addHalls,
   delHalls,
@@ -50,6 +54,20 @@ function add(req, res, next) {
       res.json({
         _id: data._id
       });
+    });
+}
+
+function del(req, res, next) {
+  //Check valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.sendStatus(404);
+  }
+
+  Cinema.findById(req.params.id)
+    .remove()
+    .then((data, err) => {
+      if (err) return next(err);
+      res.sendStatus(200);
     });
 }
 
@@ -153,5 +171,29 @@ function getHalls(req, res, next) {
 }
 
 function getFilms(req, res, next) {
+  //Check valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.sendStatus(404);
+  }
 
+  const dateStart = moment(req.query.date).startOf('day').toString();
+  const dateFinish = moment(req.query.date).endOf('day').toString();
+
+  Session.find({
+      $and: [
+        { cinema: { $eq: req.params.id }},
+        { date_start: { $gte: new Date(dateStart) } },
+        { date_finish: { $lte: new Date(dateFinish) } },
+      ]
+  })
+    .select('film')
+    .populate('film')
+    .then((data, err) => {
+      if (err) return next(err);
+      if (!data) {
+        res.sendStatus(404);
+      } else {
+        res.json(data);
+      }
+    });
 }

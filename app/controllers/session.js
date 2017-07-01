@@ -9,6 +9,7 @@ module.exports = {
   getAll,
   getElement,
   add,
+  del,
 };
 
 function getAll(req, res, next) {
@@ -142,5 +143,19 @@ function add(req, res, next) {
     })
     .catch(err => {
       if (err) next(err);
+    });
+}
+
+function del(req, res, next) {
+  //Check valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.sendStatus(404);
+  }
+
+  Session.findById(req.params.id)
+    .remove()
+    .then((data, err) => {
+      if (err) return next(err);
+      res.sendStatus(200);
     });
 }

@@ -5,6 +5,7 @@ module.exports = {
   getAll,
   getElement,
   add,
+  del,
   update
 };
 
@@ -41,6 +42,20 @@ function add(req, res, next) {
       _id: data._id
     });
   });
+}
+
+function del(req, res, next) {
+  //Check valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.sendStatus(404);
+  }
+
+  Hall.findById(req.params.id)
+    .remove()
+    .then((data, err) => {
+      if (err) return next(err);
+      res.sendStatus(200);
+    });
 }
 
 function update(req, res, next) {
