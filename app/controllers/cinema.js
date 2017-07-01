@@ -10,6 +10,7 @@ module.exports = {
   addHalls,
   delHalls,
   getHalls,
+  getFilms,
 };
 
 function getAll(req, res, next) {
@@ -149,4 +150,8 @@ function getHalls(req, res, next) {
         res.json(data);
       }
     });
+}
+
+function getFilms(req, res, next) {
+
 }

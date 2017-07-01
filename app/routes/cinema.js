@@ -11,4 +11,6 @@ router.post('/:id/halls', controller.addHalls);
 router.delete('/:id/halls', controller.delHalls);
 router.get('/:id/halls', controller.getHalls);
 
+router.get('/:id/films', controller.getFilms);
+
 module.exports = router;
